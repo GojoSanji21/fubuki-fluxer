@@ -3,16 +3,37 @@
 
 
 import pymongo, os
+import motor.motor_asyncio
 from config import DB_URI, DB_NAME
 
 
 dbclient = pymongo.MongoClient(DB_URI)
 database = dbclient[DB_NAME]
 
+async_dbclient = motor.motor_asyncio.AsyncIOMotorClient(DB_URI)
+async_database = async_dbclient[DB_NAME]
+
 # Database collections
 user_data = database['users']
 premium_user = database['premium']
+fsub_data = async_database['fsub']
 
+# FSub functions
+async def add_fsub(chat_id: int, title: str):
+    await fsub_data.update_one({'_id': chat_id}, {'$set': {'title': title}}, upsert=True)
+
+async def del_fsub(chat_id: int):
+    await fsub_data.delete_one({'_id': chat_id})
+
+async def get_fsubs():
+    fsubs = []
+    async for doc in fsub_data.find():
+        fsubs.append({'chat_id': doc['_id'], 'title': doc.get('title', 'Unknown')})
+    return fsubs
+
+async def is_fsub(chat_id: int):
+    found = await fsub_data.find_one({'_id': chat_id})
+    return bool(found)
 
 # User functions
 async def present_user(user_id: int):
