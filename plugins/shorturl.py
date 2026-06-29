@@ -11,9 +11,14 @@ def generate_random_alphanumeric():
     return random_chars
 
 def get_short(url):
-    rget = requests.get(f"https://{SHORT_URL}/api?api={SHORT_API}&url={url}&alias={generate_random_alphanumeric()}")
+    params = {
+        "api": SHORT_API,
+        "url": url,
+        "alias": generate_random_alphanumeric()
+    }
+    rget = requests.get(f"https://{SHORT_URL}/api", params=params)
     rjson = rget.json()
-    if rjson["status"] == "success" or rget.status_code == 200:
-        return rjson["shortenedUrl"]
+    if rjson.get("status") == "success" or rget.status_code == 200:
+        return rjson.get("shortenedUrl", url)
     else:
         return url
