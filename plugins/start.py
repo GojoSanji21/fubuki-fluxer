@@ -76,7 +76,7 @@ async def start_command(client: Client, message: Message):
                 buttons.append([InlineKeyboardButton(text=fsub['title'], url=f"https://t.me/c/{str(fsub['chat_id'])[4:]}/1")])
 
         try:
-            start_payload = message.command[1] if len(message.command) > 1 else ""
+            start_payload = message.command[1] if len(message.command) > 1 else "tryagain"
             try_again_url = f"https://t.me/{client.me.username if client.me else client.username}?start={start_payload}"
             buttons.append([InlineKeyboardButton(text="🔄 ᴛʀʏ ᴀɢᴀɪɴ", url=try_again_url)])
         except IndexError:
@@ -96,6 +96,9 @@ async def start_command(client: Client, message: Message):
         return
 
     text = message.text
+
+    if text == "/start tryagain":
+        text = "/start"
 
     if len(text) > 7:
         try:
