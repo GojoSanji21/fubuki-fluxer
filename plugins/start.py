@@ -227,7 +227,10 @@ async def short_url(client: Client, message: Message, base64_string):
         bot_username = client.me.username if client.me else client.username
         payload = f"yu3elk{base64_string}O"
         token = secrets.token_hex(6)
-        finalize_url = f"{VERCEL_PROXY_URL}/finalize?token={token}&bot={bot_username}&payload={payload}"
+
+        data_string = f"{token}|{bot_username}|{payload}"
+        encoded_data = base64.urlsafe_b64encode(data_string.encode()).decode().rstrip('=')
+        finalize_url = f"{VERCEL_PROXY_URL}/s/{encoded_data}"
 
         short_url = get_short(finalize_url)
 
@@ -340,3 +343,4 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
         await msg.delete()
+
