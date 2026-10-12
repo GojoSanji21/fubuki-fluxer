@@ -65,8 +65,8 @@ PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "False") == "True" e
 DISABLE_CHANNEL_BUTTON = os.environ.get("DISABLE_CHANNEL_BUTTON", None) == 'True'
 
 #Short Url or Api
-SHORT_URL = os.environ.get("SHORTNER_URL", "inshorturl.com")
-SHORT_API = os.environ.get("SHORTNER_API", "3a1b73d6f047ee291b8e9592f5cc13fb1aea6b54")
+SHORT_URL = os.environ.get("SHORTNER_URL", "arolinks.com")
+SHORT_API = os.environ.get("SHORTNER_API", "87233ee8879a0c20fffb854e9c14052152133ed2")
 
 #Vercel Proxy Url
 VERCEL_PROXY_URL = os.environ.get("VERCEL_PROXY_URL", "https://ezy-gules.vercel.app")
